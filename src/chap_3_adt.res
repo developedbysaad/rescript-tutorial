@@ -2,35 +2,36 @@ type bookFormat =
   | Hardcover
   | Paperback
   | KindleEdition
+  | Audible
 
 /*
-  The `bookFormat` is a **variant** data type. 
-  
+  The `bookFormat` is a **variant** data type.
+
   It has 3 fixed constructors separated by `|`. Each of the constructor
-  represents a valid value for the type `bookFormat`. A constructor should 
+  represents a valid value for the type `bookFormat`. A constructor should
   always be capitalized. The code will fail to compile otherwise.
  */
 
 /*
   Uncomment the block below.
  */
-/*
+
 let paperback = Paperback
 let kindleEdition = KindleEdition
-*/
+
 
 /*
   The binding can refer to only a single constructor value at any time.
   You cannot have a binding which is both `Paperback` & `KindleEdition`
   simultaneously. Hover over the bindings to see the inferred type.
 
-  You may have also noticed that the type defintion by itself does not 
+  You may have also noticed that the type defintion by itself does not
   generate any JavaScript. The compiler generates JavaScript only when
-  you use the constructor values in code. 
-  
+  you use the constructor values in code.
+
   A common source of confusion when you are beginning is to confuse
-  between a type defintion and values. 
-  
+  between a type defintion and values.
+
   The `type` is for defining your custom data structure type. A value is
   an instance of either a primitive type, or a custom defined type.
 
@@ -54,7 +55,7 @@ let kindleEdition = KindleEdition
 /*
   Uncomment the line below.
  */
-// let bookFormat: bookFormat = HardCover
+let bookFormat: bookFormat = Hardcover
 
 /*
   The `bookFormatToString` function has the following type signature:
@@ -64,7 +65,7 @@ let kindleEdition = KindleEdition
     ```
 
   You can hover over `bookFormatToString` to see the type signature.
-  
+
   The function does pattern-matching on the constructors of the variant
   data type `bookFormat`. Since there are three fixed constructors, there
   are three cases to be handled in the pattern-matching.
@@ -94,18 +95,20 @@ let kindleEdition = KindleEdition
 /*
   Uncomment the block below.
  */
-/*
+
 let bookFormatToString = format =>
   switch format {
   | Hardcover => "Hardcover"
   | Paperback => "Paperback"
   | KindleEdition => "Kindle Edition"
+  | Audible => "Audible"
   }
 
-bookFormatToString(Hardcover) // "Hardcover"
-bookFormatToString(Paperback) // "Paperback"
-bookFormatToString(KindleEdition) // "Kindle Edition"
-*/
+let _ =bookFormatToString(Hardcover) // "Hardcover"
+let _ =bookFormatToString(Paperback) // "Paperback"
+let _ =bookFormatToString(KindleEdition) // "Kindle Edition"
+let _ =bookFormatToString(Audible) // "Audible"
+
 
 /*
   You can write functions which transforms a value from one type to
@@ -119,26 +122,28 @@ bookFormatToString(KindleEdition) // "Kindle Edition"
 
   If you need to return the identical expression for multiple branches
   you can combine them on the right-hand side. It does not have to be
-  repeated multiple times. 
-  
+  repeated multiple times.
+
   Both the `Hardcover` & `Paperback` branches returns `false`.
  */
 
 /*
   Uncomment the block below.
  */
-/*
+
 let isElectronic = format =>
   switch format {
   | Hardcover
   | Paperback => false
   | KindleEdition => true
+  | Audible => true
   }
 
-isElectronic(Hardcover) // false
-isElectronic(Paperback) // false
-isElectronic(KindleEdition) // true
-*/
+let _ = isElectronic(Hardcover) // false
+let _ = isElectronic(Paperback) // false
+let _ = isElectronic(KindleEdition) // true
+let _ = isElectronic(Audible) // true
+
 
 /*
   The value of exhaustive pattern matching becomes evident when the time comes
@@ -161,7 +166,7 @@ isElectronic(KindleEdition) // true
 /*
   Uncomment the block below. It contains test code for exercise 2.
  */
-/*
+
 SimpleTest.assertEqual(
   ~expected="Audible",
   ~actual=bookFormatToString(Audible),
@@ -172,7 +177,7 @@ SimpleTest.assertEqual(
   ~actual=isElectronic(Audible),
   ~msg="[exercise 2] Audible is an electronic format",
 )
-*/
+
 
 /*
   -----------------------------------------------------------------------------
@@ -191,10 +196,23 @@ SimpleTest.assertEqual(
   -----------------------------------------------------------------------------
 */
 
+type codeEditor =
+| VSCode
+| RubyMine
+| XCode
+
+let madeBy = codeEditor =>
+switch codeEditor{
+| VSCode => "Microsoft"
+| RubyMine => "JetBrains"
+| XCode => "Apple"
+}
+
+
 /*
   Uncomment the block below. It contains test code for exercise 3.
  */
-/*
+
 SimpleTest.assertEqual(
   ~expected="Microsoft",
   ~actual=madeBy(VSCode),
@@ -210,7 +228,7 @@ SimpleTest.assertEqual(
   ~actual=madeBy(XCode),
   ~msg="[exercise 3(b)] XCode is made by ___",
 )
-*/
+
 
 type player =
   | PlayerA
@@ -221,7 +239,7 @@ type player =
   -----------------------------------------------------------------------------
   Exercise 4
   -----------------------------------------------------------------------------
-  In a turn based game the moves rotate between three palyers in the 
+  In a turn based game the moves rotate between three palyers in the
   following order:
 
     A -> B -> C -> A -> B -> C
@@ -233,12 +251,18 @@ type player =
   -----------------------------------------------------------------------------
 */
 
+let nextMoveAfter = player =>
+switch(player){
+  | PlayerA => PlayerB
+  | PlayerB => PlayerC
+  | PlayerC => PlayerA
+}
+
 /*
   Uncomment the block below. It contains test code for exercise 4.
  */
 
-/*
-let nextMoveAfter = current => current
+
 
 let playerToString = player =>
   switch player {
@@ -262,7 +286,7 @@ SimpleTest.assertEqual(
   ~actual=playerToString(nextMoveAfter(PlayerC)),
   ~msg="[exercise 4] C -> A",
 )
- */
+
 
 type user =
   | Anonymous
@@ -298,7 +322,7 @@ type user =
   random number assigned to guest users.
 
   You can use the variant type to model data structures with disjoint values.
-  The individual values can be also contextualized through additional 
+  The individual values can be also contextualized through additional
   arguments in the constructor.
 
   In this example we are able to represent an anonymous user, guest users,
@@ -311,7 +335,7 @@ type user =
   Uncomment the block below.
  */
 
-/*
+
 let userDescription = user =>
   switch user {
   | Anonymous => "Anonymous"
@@ -320,11 +344,11 @@ let userDescription = user =>
   | Moderator(karma, displayName) => `(mod) ${displayName}, ${Belt.Int.toString(karma)} points`
   }
 
-userDescription(Anonymous) // "Anonymous"
-userDescription(Guest(42)) // "Guest#42"
-userDescription(LoggedInUser(2010, "Robin Milner")) // "Robin Milner, 2010 points"
-userDescription(Moderator(1992, "Grace Hopper")) // "(mod) Grace Hopper, 1992 points"
- */
+let _ = userDescription(Anonymous) // "Anonymous"
+let _ = userDescription(Guest(42)) // "Guest#42"
+let _ = userDescription(LoggedInUser(2010, "Robin Milner")) // "Robin Milner, 2010 points"
+let _ = userDescription(Moderator(1992, "Grace Hopper")) // "(mod) Grace Hopper, 1992 points"
+
 
 type formInput =
   | Text(string) // name
@@ -351,11 +375,17 @@ type formInput =
   -----------------------------------------------------------------------------
 */
 
+let formInputToHTML = formInput =>
+switch formInput{
+  | Text(name) => `<input type="text" name="${name}" />`
+  | Number(name, min, max) => `<input type="number" name="${name}" min=${Belt.Int.toString(min)} max=${Belt.Int.toString(max)}/>`
+  | Email(name) => `<input type="email" name="${name}" />`
+  | Submit => `<input type="submit" />`
+}
+
 /*
   Uncomment the block below. It contains test code for exercise 5.
  */
-/*
-let formInputToHTML = formInput => `<input type="submit" />`
 
 SimpleTest.assertEqual(
   ~expected=`<input type="text" name="first_name" />`,
@@ -377,10 +407,9 @@ SimpleTest.assertEqual(
   ~actual=formInputToHTML(Submit),
   ~msg="[exercise 5] a submit button",
 )
- */
 
 /*
-  The **tuple** is a immutable data structure. It can contain different 
+  The **tuple** is a immutable data structure. It can contain different
   types of values.
 
   You can create a tuple value without having to define a type for it.
@@ -389,7 +418,7 @@ SimpleTest.assertEqual(
 /*
   Uncomment the line below.
  */
-// let numberFormInput = ("age-limit", 18, 25)
+let numberFormInput = ("age-limit", 18, 25)
 
 /*
   The inferred type of numberFormInput is `(string, int, int)`. Hover
@@ -403,10 +432,10 @@ SimpleTest.assertEqual(
 /*
   Uncomment the block below.
  */
-/*
+
 let (name, min, max) = ("age-limit", 18, 25)
 let ageLimit = (name, min, max)
-*/
+
 
 /*
   Since tuples are immutable, you cannot use mutation to update a tuple
@@ -415,7 +444,7 @@ let ageLimit = (name, min, max)
   You can destructure a tuple, and use the individual values to create
   a new tuple.
 
-  This is the essence of immutability. No mutation. You construct a 
+  This is the essence of immutability. No mutation. You construct a
   new value from an existing value. There is no in-place update which
   is possible on immutable values.
  */
@@ -423,11 +452,11 @@ let ageLimit = (name, min, max)
 /*
   Uncomment the block below.
  */
-/*
+
 let budget = ("price-range", 500, 1500)
 let (label, low, high) = budget
 let budget2 = (label, low - 100, high + 1000)
-*/
+
 
 /*
   Just like any other value, you can pass a tuple as an argument to a
@@ -437,32 +466,32 @@ let budget2 = (label, low - 100, high + 1000)
 /*
   Uncomment the block below.
  */
-/*
+
 let toNumberFormHTML = input => {
   let (name, min, max) = input
   `<input type="number" name="${name}" min="${Belt.Int.toString(min)}" max="${Belt.Int.toString(
     max,
   )}"`
 }
-*/
+
 
 /*
-  Alternatively you can destructure the tuple in place in the arguments 
+  Alternatively you can destructure the tuple in place in the arguments
   of the function itself.
 
   **Caution**
 
   The destructured tuple has parenthesis around it:
-  
+
      `... = ( (name, min, max) ) => ...`
-  
+
   The type signature of the function `toNumberFormHTML` is:
 
     ```
     ( (string, int, int) ) => string
     ```
-  
-  This means the function takes a tuple with 3 values as input and 
+
+  This means the function takes a tuple with 3 values as input and
   produces a `string` type value as output.
 
   It is easy to confuse this with a type signature like:
@@ -482,12 +511,12 @@ let toNumberFormHTML = input => {
 /*
   Uncomment the block below.
  */
-/*
+
 let toNumberFormHTML2 = ((name, min, max)) =>
   `<input type="number" name="${name}" min="${Belt.Int.toString(min)}" max="${Belt.Int.toString(
     max,
   )}"`
-*/
+
 
 /*
   Tuples values have a fixed order when they are created. Tuples are
@@ -527,11 +556,11 @@ type project = {
 /*
   Uncomment the block below.
  */
-/*
+
 let atom = {name: "Atom", url: "https://atom.io", repositories: 255, people: 56}
 let node = {name: "Node.js", url: "https://nodejs.org", repositories: 182, people: 375}
 let rails = {name: "Ruby on Rails", url: "https://rubyonrails.org", repositories: 99, people: 66}
- */
+
 
 /*
   Just like tuples, the record values can be destructured into the field
@@ -552,15 +581,15 @@ let rails = {name: "Ruby on Rails", url: "https://rubyonrails.org", repositories
 /*
   Uncomment the block below.
  */
-/*
+
 let projectLinkHTML = ({url, name}) => {
   `<a href="${url}">${name}</a>`
 }
 
-projectLinkHTML(atom) // <a href="https://atom.io">Atom</a>
-projectLinkHTML(node) // <a href="https://nodejs.org">Node.js</a>
-projectLinkHTML(rails) // <a href="https://rubyonrails.org">Ruby on Rails</a>
-*/
+let _ = projectLinkHTML(atom) // <a href="https://atom.io">Atom</a>
+let _ = projectLinkHTML(node) // <a href="https://nodejs.org">Node.js</a>
+let _ = projectLinkHTML(rails) // <a href="https://rubyonrails.org">Ruby on Rails</a>
+
 
 /*
   You can also pass the record without destructuring. In this case
@@ -577,14 +606,14 @@ projectLinkHTML(rails) // <a href="https://rubyonrails.org">Ruby on Rails</a>
 /*
   Uncomment the block below.
  */
-/*
+
 let projectLinkHTML2 = project => {
   `<a href="${project.url}">${project.name}</a>`
 }
-*/
+
 
 /*
-  Since records are immutable, this is how you update the value of a 
+  Since records are immutable, this is how you update the value of a
   record field.
 
   The `...atom` at the beginning of the record destructures the existing
@@ -595,7 +624,7 @@ let projectLinkHTML2 = project => {
 /*
   Uncomment the line below.
  */
-// let atom2 = {...atom, people: atom.people + 1}
+let atom2 = {...atom, people: atom.people + 1}
 
 /*
   There is no limitation on the number of fields you can update.
@@ -604,7 +633,7 @@ let projectLinkHTML2 = project => {
 /*
   Uncomment the line below.
  */
-// let atom3 = {...atom2, people: atom2.people + 5, repositories: atom2.repositories + 2}
+let atom3 = {...atom2, people: atom2.people + 5, repositories: atom2.repositories + 2}
 
 /*
   So far you have learned about the following types,
@@ -624,7 +653,7 @@ let projectLinkHTML2 = project => {
   When combined together you can construct complex data structures which
   best fit & describe your programs. For example, see the `book` record
   type defined below. The `format` field is not a primitive type. It is
-  the `bookFormat` variant which was defined in the beginning.  
+  the `bookFormat` variant which was defined in the beginning.
  */
 
 type book = {title: string, tagline: string, format: bookFormat, availableInStock: int}
@@ -632,21 +661,21 @@ type book = {title: string, tagline: string, format: bookFormat, availableInStoc
 /*
   Uncomment the block below.
  */
-/*
+
 let codersAtWork = {
   title: "Coders at Work",
   tagline: "Reflections on the Craft of Programming",
   format: Paperback,
   availableInStock: 10,
 }
- */
+
 
 /*
   -----------------------------------------------------------------------------
   Exercise 6
   -----------------------------------------------------------------------------
-  Implement the function: 
-  
+  Implement the function:
+
     let bookToHTML: book => string
 
   Generate the HTML string for a book like this:
@@ -658,16 +687,20 @@ let codersAtWork = {
 
   Notes:
     1. You will need the `bookFormatToString` function defined earlier.
-    2. Use the `Belt.Int.toString` function to convert an `int` to a 
+    2. Use the `Belt.Int.toString` function to convert an `int` to a
       `string` value.
   -----------------------------------------------------------------------------
 */
 
+let bookToHTML = book =>{
+`<div>
+    <h2>${book.title}: ${book.tagline}</h2>
+    <p>${Belt.Int.toString(book.availableInStock)} new ${bookFormatToString(book.format)} available in stock</p>
+</div>`
+}
 /*
   Uncomment the block below. It contains test code for exercise 6.
  */
-/*
-let bookToHTML = book => ""
 
 let expectedBookHTML = `<div>
     <h2>Coders at Work: Reflections on the Craft of Programming</h2>
@@ -678,7 +711,7 @@ SimpleTest.assertEqual(
   ~actual=bookToHTML(codersAtWork),
   ~msg="[exercise 6] book => string (html formatted)",
 )
- */
+
 
 type fontSize =
   | Small
@@ -738,11 +771,11 @@ type shape =
 /*
   Uncomment the block below.
  */
-/*
+
 let block = Rectangle({x: 100, y: 100, width: 50, height: 50})
 let line = Line({x1: 150, y1: 125, x2: 250, y2: 125})
 let textLabel = Text({text: "Connect", fontSize: Medium, fontFamily: Monospace})
- */
+
 
 /*
   To draw these shapes we can define a few functions which each know
@@ -759,7 +792,7 @@ let textLabel = Text({text: "Connect", fontSize: Medium, fontFamily: Monospace})
     let drawLine: line => unit
     let drawText: text => unit
     ```
-  
+
   Each of these functions consumes a values, and returns nothing. This is
   indicated by the return type being `unit`.
  */
@@ -767,7 +800,7 @@ let textLabel = Text({text: "Connect", fontSize: Medium, fontFamily: Monospace})
 /*
   Uncomment the block below.
  */
-/*
+
 // pretend to draw a rectangle at (x, y) with width x height pixels
 let drawRectangle = rect => {
   Js.log("Drawing a rectangle:")
@@ -788,7 +821,7 @@ let drawText = text => {
   Js.log("Drawing text:")
   Js.log(`\tText: ${text.text}`)
 }
-*/
+
 
 /*
   -----------------------------------------------------------------------------
@@ -811,17 +844,23 @@ let drawText = text => {
 /*
   Uncomment the block below.
  */
-/*
-let drawShape = shape => ()
 
-drawShape(block)
-drawShape(line)
-drawShape(textLabel)
-*/
+let drawShape = shape => {
+switch shape{
+| Rectangle(rectangle)=>drawRectangle(rectangle)
+| Line(line) => drawLine(line)
+| Text(text) => drawText(text)
+}
+}
+
+Js.log(drawShape(block))
+Js.log(drawShape(line))
+Js.log(drawShape(textLabel))
+
 
 /*
   There is a common mistake beginners to the language make when writing
-  patter-matching code for variants which compose record arguments. 
+  patter-matching code for variants which compose record arguments.
 
   The type signatures of the specialized draw functions like `drawText` or
   `drawRectangle` or `drawLine` would be instead implemented as:
